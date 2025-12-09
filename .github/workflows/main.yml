@@ -27,7 +27,7 @@ jobs:
         - name: Build and deploy Container App
           uses: azure/container-apps-deploy-action@v1
           with:
-            appSourcePath: ${{ github.workspace }}/src
+            appSourcePath: ${{ github.workspace }}/
             acrName: utkalamand
             containerAppName: hello-my-container-app
             resourceGroup: ${{ secrets.RESOURCE_GROUP }}
