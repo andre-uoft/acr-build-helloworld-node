@@ -48,7 +48,7 @@ jobs:
           uses: Azure/container-apps-deploy-action@v2
           with:
             # Absolute path on the GitHub runner of the source application code to be built.
-            # appSourcePath: # optional
+            appSourcePath: ./
             # The name of the Azure Container Registry that the runnable application image will be pushed to.
             acrName: utkalamand
             
