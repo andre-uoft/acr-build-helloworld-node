@@ -53,7 +53,7 @@ jobs:
             acrName: utkalamand
             
             # The base URL of the Container Registry that the runnable application image will be pushed to.
-            registryUrl: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+            # registryUrl: ${{ secrets.REGISTRY_LOGIN_SERVER }}
             registryUsername: ${{ secrets.REGISTRY_USERNAME }}
             registryPassword: ${{ secrets.REGISTRY_PASSWORD }}        
             azureCredentials: ${{ secrets.AZURE_CREDENTIALS }}
