@@ -43,7 +43,7 @@ jobs:
             # dockerfilePath: # optional
             # 'The name of the Azure Container App that will be created or updated. If not provided, this value will be gh-action-app-<github-run-id>-<github-run-attempt>.'
         
-            # containerAppName: # optional, default is gh-action-app-${{ github.run_id }}-${{ github.run_attempt }}
+            containerAppName: sample-hello
             
         
             resourceGroup: ${{ secrets.RESOURCE_GROUP }}
