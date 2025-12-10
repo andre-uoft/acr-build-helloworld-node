@@ -13,16 +13,17 @@ jobs:
           uses: azure/login@v1
           with:
             creds: ${{ secrets.AZURE_CREDENTIALS }}
-        
-        - name: 'Build and push image'
-          uses: azure/docker-login@v1
-          with:
-            login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
-            username: ${{ secrets.REGISTRY_USERNAME }}
-            password: ${{ secrets.REGISTRY_PASSWORD }}
-        - run: |
-            docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/sampleapp:${{ github.sha }}
-            docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/sampleapp:${{ github.sha }}
+
+        # I believe that v2 does this
+        # - name: 'Build and push image'
+        #   uses: azure/docker-login@v1
+        #   with:
+        #     login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+        #     username: ${{ secrets.REGISTRY_USERNAME }}
+        #     password: ${{ secrets.REGISTRY_PASSWORD }}
+        # - run: |
+        #     docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/sampleapp:${{ github.sha }}
+        #     docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/sampleapp:${{ github.sha }}
 
         # - name: Build and deploy Container App
         #   uses: azure/container-apps-deploy-action@v1
@@ -50,10 +51,10 @@ jobs:
             # Absolute path on the GitHub runner of the source application code to be built.
             appSourcePath: ./
             # The name of the Azure Container Registry that the runnable application image will be pushed to.
-            acrName: utkalamand
+            #acrName: utkalamand
             
             # The base URL of the Container Registry that the runnable application image will be pushed to.
-            # registryUrl: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+            registryUrl: ${{ secrets.REGISTRY_LOGIN_SERVER }}
             registryUsername: ${{ secrets.REGISTRY_USERNAME }}
             registryPassword: ${{ secrets.REGISTRY_PASSWORD }}        
             azureCredentials: ${{ secrets.AZURE_CREDENTIALS }}
@@ -62,7 +63,7 @@ jobs:
             # not provided, a default image name will be constructed in the form of
             # <acr-name>.azurecr.io/github-action/container-app:<github-run-id>.<github-run-attempt>.'
         
-            # imageToBuild: # optional
+            imageToBuild: ${{ secrets.REGISTRY_LOGIN_SERVER }}/hello-sampleapp:${{ github.sha }}
             # 'The custom name of an image that has already been pushed to the Container Registry and will be deployed to the Container App by this
             # action. Note: this image name should include the registry server; e.g., <registryUrl>/<repo>:<tag>. If this
             # argument is not provided, the value provided (or determined) for the "imageToBuild" argument will be used.'
