@@ -24,13 +24,13 @@ jobs:
             docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/sampleapp:${{ github.sha }}
             docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/sampleapp:${{ github.sha }}
 
-        - name: Build and deploy Container App
-          uses: azure/container-apps-deploy-action@v1
-          with:
-            appSourcePath: ${{ github.workspace }}/
-            acrName: utkalamand
-            containerAppName: hello-my-container-app
-            resourceGroup: ${{ secrets.RESOURCE_GROUP }}
+        # - name: Build and deploy Container App
+        #   uses: azure/container-apps-deploy-action@v1
+        #   with:
+        #     appSourcePath: ${{ github.workspace }}/
+        #     acrName: utkalamand
+        #     containerAppName: hello-my-container-app
+        #     resourceGroup: ${{ secrets.RESOURCE_GROUP }}
             #imageToDeploy: myregistry.azurecr.io/app:${{ github.sha }}
             
             
@@ -43,6 +43,49 @@ jobs:
             # registry-password: ${{ secrets.REGISTRY_PASSWORD }}
             # name: aci-sampleapp
             # location: 'west us'
+
+        - name: Azure Container Apps Build and Deploy
+          uses: Azure/container-apps-deploy-action@v2
+          with:
+            # Absolute path on the GitHub runner of the source application code to be built.
+            # appSourcePath: # optional
+            # The name of the Azure Container Registry that the runnable application image will be pushed to.
+            acrName: utkalamand
+            
+            # The base URL of the Container Registry that the runnable application image will be pushed to.
+            registryUrl: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+            registryUsername: ${{ secrets.REGISTRY_USERNAME }}
+            registryPassword: ${{ secrets.REGISTRY_PASSWORD }}        
+            azureCredentials: ${{ secrets.AZURE_CREDENTIALS }}
+            # 'The custom name of the image that is to be built, pushed to the Container Registry and deployed to the Container App by this action.
+            # Note: this image name should include the registry server; e.g., <registryUrl>/<repo>:<tag>. If this argument is
+            # not provided, a default image name will be constructed in the form of
+            # <acr-name>.azurecr.io/github-action/container-app:<github-run-id>.<github-run-attempt>.'
+        
+            # imageToBuild: # optional
+            # 'The custom name of an image that has already been pushed to the Container Registry and will be deployed to the Container App by this
+            # action. Note: this image name should include the registry server; e.g., <registryUrl>/<repo>:<tag>. If this
+            # argument is not provided, the value provided (or determined) for the "imageToBuild" argument will be used.'
+        
+            #imageToDeploy: # optional
+            # 'Relative path to the Dockerfile in the provided application source that should be used to build the image that is then pushed to the Container Registry and deployed to the Container App. If not provided, this action will check if there is a file named "Dockerfile" in the provided application source and use that to build the image. Otherwise, the Oryx++ Builder will be used to create the image.'
+        
+            # dockerfilePath: # optional
+            # 'The name of the Azure Container App that will be created or updated. If not provided, this value will be gh-action-app-<github-run-id>-<github-run-attempt>.'
+        
+            # containerAppName: # optional, default is gh-action-app-${{ github.run_id }}-${{ github.run_attempt }}
+            
+        
+            resourceGroup: ${{ secrets.RESOURCE_GROUP }}
+            
+            # 'The platform version stack that the application runs in when deployed to the Azure Container App. This should
+            # be provided in the format <platform>:<version>. If not provided, this value is determined by Oryx based on the
+            # contents of the provided application. Please view the following document for more information on the supported
+            # runtime stacks for Oryx:
+            # https://github.com/microsoft/Oryx/blob/main/doc/supportedRuntimeVersions.md'
+        
+            # runtimeStack: # optional
+          
 
         # - name: 'Deploy to Azure Container Instances'
         #   uses: 'azure/aci-deploy@v1'
